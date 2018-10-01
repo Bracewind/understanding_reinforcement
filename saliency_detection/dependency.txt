@@ -1,0 +1,22 @@
+here is the linux environment (installed via apt) necesary by the program :
+
+zlib1g-dev (zlib)
+cmake
+ffmpeg
+
+
+here is the python environment used to launch the file (installed with pip)
+
+python 3.6
+numpy 1.15
+scipy 1.1
+matplotlib 3.0
+jupyter
+ffmpeg 1.2.1
+
+cuda 9.1.85 (improvement of 9.0)
+torch 0.4.1
+torchvision 0.2.1
+gym 0.10.5
+wheel 0.31.1
+gym[atari]
