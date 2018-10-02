@@ -48,9 +48,20 @@ class DQN(torch.nn.Module):
     def __init__(self, nbState, num_actions):
         super(DQN, self).__init__()
         self.nbState = nbState
-        self.input = nn.Linear(nbState, 5*nbState)
-        self.deepFC1 = nn.Linear(5*nbState, nbState)
-        self.actionChosen = nn.Linear(nbState, num_actions)
+        self.num_actions = num_actions
+        self.input = nn.Linear(nbState, 24).cuda()
+        self.deepFC1 = nn.Linear(24, 24).cuda()
+        self.actionChosen = nn.Linear(24, num_actions).cuda()
+
+        self.epsilon = 0.1
+
+        self.initWeight()
+
+    def initWeight(self):
+        nn.init.constant_(self.input.weight, 0)
+        nn.init.constant_(self.deepFC1.weight, 0)
+        nn.init.constant_(self.actionChosen.weight, 0)
+
 
     def forward(self, inputs):
         inputs = inputs
@@ -66,3 +77,12 @@ class DQN(torch.nn.Module):
             self.load_state_dict(torch.load(paths[ix]))
         print("\tno saved models") if step is 0 else print("\tloaded model: {}".format(paths[ix]))
         return step
+
+    def chooseAction(self, state):
+        valueAction = self(state)
+        action = (valueAction == max(valueAction)).nonzero()[0][0].cpu().numpy()
+
+        if (self.epsilon > np.random.random()):
+            action = np.random.random_integers(0, self.num_actions-1)
+
+        return action

@@ -22,8 +22,8 @@ def get_mask(center, size, r):
     mask = gaussian_filter(mask, sigma=r) # blur the circle of pixels. this is a 2D Gaussian for r=r^2=1
     return mask/mask.max()
 
-def gaussian_perturbation():
-    return np.random.normal(0, 0.1, 1)
+def gaussian_perturbation(center, r):
+    return np.random.normal(center, r)
 
 def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memory=None, mode='actor'):
     if mask is None:
