@@ -15,6 +15,7 @@ prepro = lambda img: imresize(img[35:195].mean(2), (80,80)).astype(np.float32).r
 searchlight = lambda I, mask: I*mask + gaussian_filter(I, sigma=3)*(1-mask) # choose an area NOT to blur
 occlude = lambda I, mask: I*(1-mask) + gaussian_filter(I, sigma=3)*mask # choose an area to blur
 
+
 def get_mask(center, size, r):
     y, x = np.ogrid[-center[0]:size[0]-center[0], -center[1]:size[1]-center[1]]
     keep = x*x + y*y <= 1
@@ -22,8 +23,10 @@ def get_mask(center, size, r):
     mask = gaussian_filter(mask, sigma=r) # blur the circle of pixels. this is a 2D Gaussian for r=r^2=1
     return mask/mask.max()
 
+
 def gaussian_perturbation(center, r):
     return np.random.normal(center, r)
+
 
 def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memory=None, mode='actor'):
     if mask is None:
@@ -37,6 +40,7 @@ def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memo
     cx = Variable(torch.Tensor(history['cx'][ix-1]).view(1,-1))
     if blur_memory is not None: cx.mul_(1-blur_memory) # perturb memory vector
     return model((state, (hx, cx)))[0] if mode == 'critic' else model((state, (hx, cx)))[1]
+
 
 def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     # r: radius of blur
@@ -53,6 +57,7 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     pmax = scores.max()
     scores = imresize(scores, size=[80,80], interp='bilinear').astype(np.float32)
     return pmax * scores / scores.max()
+
 
 def score_state(model, history, ix, interp_func):
     L = run_through_model(model, history, ix, interp_func)
@@ -75,6 +80,7 @@ def saliency_on_atari_frame(saliency, atari, fudge_factor, channel=2, sigma=0):
     I[35:195,:,channel] += S.astype('uint16')
     I = I.clip(1,255).astype('uint8')
     return I
+
 
 def get_env_meta(env_name):
     meta = {}

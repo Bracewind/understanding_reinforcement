@@ -53,7 +53,7 @@ class DQN(torch.nn.Module):
         self.deepFC1 = nn.Linear(24, 24).cuda()
         self.actionChosen = nn.Linear(24, num_actions).cuda()
 
-        self.epsilon = 0.1
+        self.epsilon = 0.01
 
         self.initWeight()
 
@@ -69,6 +69,9 @@ class DQN(torch.nn.Module):
         x = F.elu(self.deepFC1(x))
         return self.actionChosen(x)
 
+    def save(self):
+        pass
+
     def try_load(self, save_dir, checkpoint='*.tar'):
         paths = glob.glob(save_dir + checkpoint) ; step = 0
         if len(paths) > 0:
@@ -80,7 +83,7 @@ class DQN(torch.nn.Module):
 
     def chooseAction(self, state):
         valueAction = self(state)
-        action = (valueAction == max(valueAction)).nonzero()[0][0].cpu().numpy()
+        action = (valueAction == max(valueAction)).nonzero()[0][0].cpu().numpy().tolist()
 
         if (self.epsilon > np.random.random()):
             action = np.random.random_integers(0, self.num_actions-1)
