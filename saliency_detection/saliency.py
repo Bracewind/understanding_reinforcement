@@ -15,6 +15,8 @@ prepro = lambda img: imresize(img[35:195].mean(2), (80,80)).astype(np.float32).r
 searchlight = lambda I, mask: I*mask + gaussian_filter(I, sigma=3)*(1-mask) # choose an area NOT to blur
 occlude = lambda I, mask: I*(1-mask) + gaussian_filter(I, sigma=3)*mask # choose an area to blur
 
+apply_gaussian = lambda x: x + gaussian_perturbation(x, 1)
+
 
 def get_mask(center, size, r):
     y, x = np.ogrid[-center[0]:size[0]-center[0], -center[1]:size[1]-center[1]]
@@ -42,6 +44,19 @@ def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memo
     return model((state, (hx, cx)))[0] if mode == 'critic' else model((state, (hx, cx)))[1]
 
 
+# ix is the numero of the current step
+# history['ins'][ix] is the state at the ix step
+def run_through_model(model, history, ix, input_to_change=None, perturbation=None):
+    if input_to_change is None:
+        state = history['ins'][ix]
+    else:
+        assert (perturbation is not None, "perturbation cannot be none when we want to change an input")
+        state = perturbation(history['ins'][ix])
+    tens_state = torch.Tensor(state)
+    state = Variable(tens_state.unsqueeze(0), volatile=True)
+    return model(state)
+
+
 def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     # r: radius of blur
     # d: density of scores (if d==1, then get a score for every pixel...
@@ -60,11 +75,10 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
 
 
 def score_state(model, history, ix, interp_func):
-    L = run_through_model(model, history, ix, interp_func)
-    scores =np.zeros(model.nbState)
+    L = run_through_model(model, history, ix)
+    scores = np.zeros(model.nbState)
     for i in range(model.nbState):
-        mask = gaussian_perturbation()
-        l = run_through_model(model, history, ix, interp_func, mask=mask)
+        l = run_through_model(model, history, ix, i, interp_func)
         scores[i] = (L-l).pow(2).sum().mul(0.5).data[0]
     return scores
 
@@ -80,6 +94,12 @@ def saliency_on_atari_frame(saliency, atari, fudge_factor, channel=2, sigma=0):
     I[35:195,:,channel] += S.astype('uint16')
     I = I.clip(1,255).astype('uint8')
     return I
+
+
+def create_concept_saliency(saliency):
+    S = saliency
+    S -= S.min()
+    return S
 
 
 def get_env_meta(env_name):

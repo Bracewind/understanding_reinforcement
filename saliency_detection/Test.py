@@ -37,7 +37,7 @@ def testLearning():
     env = gym.make('CartPole-v0')
     learning_process = LearningProcessInterface(env, model)
 
-    learning_process.trainModel(32, 1000, seeAdvance=100)
+    learning_process.trainModel(32, 100, seeAdvance=100)
     learning_process.testModel(20, 20)
     learning_process.playGameWithModel()
 
