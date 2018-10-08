@@ -46,14 +46,14 @@ def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memo
 
 # ix is the numero of the current step
 # history['ins'][ix] is the state at the ix step
-def run_through_model(model, history, ix, input_to_change=None, perturbation=None):
+def run_through_model(model, history, input_to_change=None, perturbation=None):
     if input_to_change is None:
-        state = history['ins'][ix]
+        state = history['ins']
     else:
         assert (perturbation is not None, "perturbation cannot be none when we want to change an input")
-        state = perturbation(history['ins'][ix])
-    tens_state = torch.Tensor(state)
-    state = Variable(tens_state.unsqueeze(0), volatile=True)
+        state = perturbation(history['ins'])
+    tens_state = state
+    state = Variable(torch.Tensor(tens_state).cuda(), volatile=True).cuda()
     return model(state)
 
 
@@ -74,11 +74,11 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     return pmax * scores / scores.max()
 
 
-def score_state(model, history, ix, interp_func):
-    L = run_through_model(model, history, ix)
+def score_state(model, history, interp_func):
+    L = run_through_model(model, history)
     scores = np.zeros(model.nbState)
     for i in range(model.nbState):
-        l = run_through_model(model, history, ix, i, interp_func)
+        l = run_through_model(model, history, i, interp_func)
         scores[i] = (L-l).pow(2).sum().mul(0.5).data[0]
     return scores
 
@@ -101,6 +101,28 @@ def create_concept_saliency(saliency):
     S -= S.min()
     return S
 
+def create_image_representation(saliency, image_length):
+    space_between_input = 40
+    length_square = 40
+    center = length_square//2
+    currentCenter = center
+    image = np.zeros([40, image_length, 3])
+    for index in range(len(saliency)):
+        score = saliency[index]
+        nbcolumn = score // 255
+
+        for x in range(length_square):
+            for y in range(length_square):
+                if abs(center-x) + abs(center-y) <= nbcolumn:
+                    image[x, index*(length_square) + y, 0] = 254
+                else:
+                    image[x, index*(length_square) + y, 0] = 0
+
+        currentCenter += 40
+        image[0, index*(length_square)] = 254
+
+    image = np.array(image, dtype="float32")
+    return image
 
 def get_env_meta(env_name):
     meta = {}

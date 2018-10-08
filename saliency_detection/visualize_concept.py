@@ -17,6 +17,11 @@ from LeaningProcessInterface import *
 from saliency import *
 
 
+def calculate_saliency(learning_process_interface, model):
+    learning_process_interface.
+
+
+
 def make_movie(env_name, checkpoint='*.tar', num_frames=20, first_frame=0, resolution=75, \
                save_dir='./movies/', density=5, radius=5, prefix='default', overfit_mode=False):
     # set up dir variables and environment

@@ -1,6 +1,7 @@
 from policy import *
 from utils import *
 from LearningProcessInterface import *
+from saliency import *
 
 import gym
 import time
@@ -32,19 +33,32 @@ def testTraining():
     trainer = Trainer(agent, memory)
     trainer.train(5, [])
 
+
 def testLearning():
     model = DQN(4, 2)
     env = gym.make('CartPole-v0')
     learning_process = LearningProcessInterface(env, model)
 
-    learning_process.trainModel(32, 100, seeAdvance=100)
+    learning_process.trainModel(32, 2000, seeAdvance=100)
     learning_process.testModel(20, 20)
-    learning_process.playGameWithModel()
+    for i in range(5):
+        learning_process.displayGameWithModel()
+    model.save("/home/brain/Documents/understanding_reinforcement/test_ckpt.pth.tar")
+
+
+def test_saliency():
+    model = DQN(4, 2)
+    model.try_load("/home/brain/Documents/understanding_reinforcement/test_ckpt.pth.tar")
+    env = gym.make('CartPole-v0')
+
+    learning_process = LearningProcessInterface(env, model)
+    learning_process.calculate_saliency()
 
 
 if __name__ == '__main__':
-    testUtils()
-    testDQN()
-    testMemory()
-    testTraining()
-    testLearning()
+    #testUtils()
+    #testDQN()
+    #testMemory()
+    #testTraining()
+    #testLearning()
+    test_saliency()

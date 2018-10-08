@@ -69,17 +69,12 @@ class DQN(torch.nn.Module):
         x = F.elu(self.deepFC1(x))
         return self.actionChosen(x)
 
-    def save(self):
-        pass
+    def save(self, path):
+        print("model saved at : ", path)
+        torch.save(self.state_dict(), path)
 
-    def try_load(self, save_dir, checkpoint='*.tar'):
-        paths = glob.glob(save_dir + checkpoint) ; step = 0
-        if len(paths) > 0:
-            ckpts = [int(s.split('.')[-2]) for s in paths]
-            ix = np.argmax(ckpts) ; step = ckpts[ix]
-            self.load_state_dict(torch.load(paths[ix]))
-        print("\tno saved models") if step is 0 else print("\tloaded model: {}".format(paths[ix]))
-        return step
+    def try_load(self, save_file):
+        self.load_state_dict(torch.load(save_file))
 
     def chooseAction(self, state):
         valueAction = self(state)
