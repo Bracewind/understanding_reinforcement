@@ -14,7 +14,9 @@ class LearningProcessInterface(object):
         self.trainer = Trainer(self.playerModel, self.memoryGame)
 
     def oneEpisode(self, get_history=False, render=False, calculate_saliency=False):
-        if get_history or calculate_saliency:
+        if calculate_saliency:
+            get_history = True
+        if get_history:
             history = {'ins': [], 'reward': [], 'image': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
         state = torch.Tensor(self.game.reset()).cuda()
         done = False
@@ -24,7 +26,6 @@ class LearningProcessInterface(object):
 
             next_state, reward, done, expert_policy = self.game.step(action)
             next_state = torch.Tensor(next_state).cuda()
-
 
             self.memoryGame.push(state, action, next_state, reward, done)
 
@@ -40,13 +41,13 @@ class LearningProcessInterface(object):
                 value_episode['done'] = done
 
                 range_values = [4.8,100,80,100]
-                values = score_state(self.playerModel, value_episode, apply_perturbation, range_values)
+                values_saliency = score_state(self.playerModel, value_episode, apply_perturbation, range_values, totalReward)
                 # TODO: no hardcode of meaning
-                values_dict = {'CartPosition': values[0], 'CartVelocity': values[1], 'PoleAngle': values[2], 'PoleVelocityAtTip': values[3]}
+                values_dict = {'CartPosition': values_saliency[0], 'CartVelocity': values_saliency[1], 'PoleAngle': values_saliency[2], 'PoleVelocityAtTip': values_saliency[3]}
                 image = self.game.render(mode='rgb_array').tolist()
                 length_image = len(image[0])
 
-                saliency = create_image_representation(values, length_image)
+                saliency = create_image_representation(values_saliency, length_image)
                 [image.append(saliency_value) for saliency_value in saliency]
 
                 history['image_saliency'].append(np.array(image))
@@ -54,7 +55,54 @@ class LearningProcessInterface(object):
             state = next_state
             # time.sleep(1)
 
-        if get_history or calculate_saliency:
+        if get_history:
+            return history
+
+    def oneEpisodeSaliency(self, totalReward):
+        if calculate_saliency:
+            get_history = True
+        if get_history:
+            history = {'ins': [], 'reward': [], 'image': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
+        state = torch.Tensor(self.game.reset()).cuda()
+        done = False
+        while not done:
+
+            action = self.playerModel.chooseAction(state)
+
+            next_state, reward, done, expert_policy = self.game.step(action)
+            next_state = torch.Tensor(next_state).cuda()
+
+            totalReward += reward
+
+            self.memoryGame.push(state, action, next_state, reward, done)
+
+            if get_history:
+                history['ins'].append(state)
+                history['reward'].append(reward)
+                history['done'].append(done)
+
+            if calculate_saliency:
+                value_episode = {'ins':None, 'reward': None, 'done': False}
+                value_episode['ins'] = state.cpu().detach().numpy()
+                value_episode['reward'] = reward
+                value_episode['done'] = done
+
+                range_values = [4.8,100,80,100]
+                values_saliency = score_state(self.playerModel, value_episode, apply_perturbation, range_values, totalReward)
+                # TODO: no hardcode of meaning
+                values_dict = {'CartPosition': values_saliency[0], 'CartVelocity': values_saliency[1], 'PoleAngle': values_saliency[2], 'PoleVelocityAtTip': values_saliency[3]}
+                image = self.game.render(mode='rgb_array').tolist()
+                length_image = len(image[0])
+
+                saliency = create_image_representation(values_saliency, length_image)
+                [image.append(saliency_value) for saliency_value in saliency]
+
+                history['image_saliency'].append(np.array(image))
+
+            state = next_state
+            # time.sleep(1)
+
+        if get_history:
             return history
 
     def trainModel(self, batchSize, epoch, seeAdvance):

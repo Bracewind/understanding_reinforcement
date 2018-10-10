@@ -56,16 +56,19 @@ class Trainer:
 
         for memory in transitions:
             state_action_value = self.model(memory.state)
-            next_state_values = self.model(memory.next_state)
+            next_state_action_values = self.model(memory.next_state)
 
             expected_state_action_value = memory.reward
             if not memory.done:
-                expected_state_action_value += self.discountFactor*max(next_state_values)
+                expected_state_action_value += self.discountFactor*max(next_state_action_values)
 
+            # copy the state action value given by the network
             action_values = utils.tensor_deepcopy(state_action_value)
+
+            # change it to correspond to the state action value we want the network learn
             action_values[memory.action] = expected_state_action_value
 
-            # Compute Mean square error loss
+            # Compute Mean square error loss between what the network think and what we want
             value_loss = self.loss(state_action_value, action_values)
             add_value_loss += value_loss.item()
             iter += 1

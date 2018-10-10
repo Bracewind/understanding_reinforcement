@@ -4,17 +4,36 @@ import numpy as np
 from MatrixDecision import *
 
 def f1(price):
-    return 1
+    if price < 0:
+        price = 0
+    quantity = 500 - 2*price
+    if quantity < 0:
+        quantity = 0
+    return quantity
 
-def f2(price):
-    return 1
+def f2(price)
+    if price < 0:
+        price = 0
+    quantity = 500 * exp(- price)
+    if quantity < 0:
+        quantity = 0
+    return quantity
 
 def f3(price):
-    return 1
+    if price < 0:
+        price = 0
+    quantity = 1000 -3* price
+    if quantity < 0:
+        quantity = 0
+    return quantity
 
 def f4(price):
-    return 1
-
+    if price < 0:
+        price = 0
+    quantity = 1000 *exp(-2*price)
+    if quantity < 0:
+        quantity = 0
+    return quantity
 
 vector = np.array([1,20,2, 50,7, 80, 3,120])
 matDec = MatrixDecision(4, vector)

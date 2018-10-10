@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97e2be01-ae0c-4448-8f22-cb41946f00fb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pyCompany/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pyCompany/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pyCompany/Interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/../pyCompany/Interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pyCompany/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../pyCompany/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LearningProcessInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/LearningProcessInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/policy.py" beforeDir="false" afterPath="$PROJECT_DIR$/policy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/saliency.py" beforeDir="false" afterPath="$PROJECT_DIR$/saliency.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualize_concept.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualize_concept.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trainNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainNetwork.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,12 +62,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="137" />
-          <entry key="py" value="3258" />
+          <entry key="py" value="3638" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="3395" />
+          <entry key="Python" value="3775" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -87,11 +87,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/trainNetwork.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="150">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
-                <marker date="1538472164491" expanded="true" signature="1216:1222" ph="..." />
+                <marker date="1539175074872" expanded="true" signature="1216:1222" ph="..." />
               </folding>
             </state>
           </provider>
@@ -100,10 +100,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/saliency.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="103" column="54" selection-start-line="103" selection-start-column="42" selection-end-line="103" selection-end-column="54" />
+            <state relative-caret-position="272">
+              <caret line="87" column="55" lean-forward="true" selection-start-line="87" selection-start-column="55" selection-end-line="87" selection-end-column="55" />
               <folding>
-                <marker date="1538581017269" expanded="true" signature="4419:5110" ph="..." />
+                <marker date="1539180611446" expanded="true" signature="5455:5476" ph="..." />
               </folding>
             </state>
           </provider>
@@ -112,11 +112,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/visualize_concept.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="66" column="14" lean-forward="true" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
+            <state relative-caret-position="366">
+              <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
-                <marker date="1538568152369" expanded="true" signature="444:480" ph="..." />
               </folding>
             </state>
           </provider>
@@ -130,11 +129,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LearningProcessInterface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+            <state relative-caret-position="392">
+              <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <marker date="1538581822789" expanded="true" signature="3316:3322" ph="..." />
+                <marker date="1539180951379" expanded="true" signature="5356:5362" ph="..." />
               </folding>
             </state>
           </provider>
@@ -162,10 +161,9 @@
         <entry file="file://$PROJECT_DIR$/Test.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="463">
-              <caret line="63" column="19" lean-forward="true" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
+              <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <marker date="1538571360093" expanded="true" signature="1316:1568" ph="..." />
               </folding>
             </state>
           </provider>
@@ -174,8 +172,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/policy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
-              <caret line="76" column="39" selection-start-line="76" selection-start-column="39" selection-end-line="76" selection-end-column="39" />
+            <state relative-caret-position="-40">
+              <caret line="55" column="27" lean-forward="true" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
               <folding>
                 <marker date="1538568483626" expanded="true" signature="2616:2666" ph="..." />
                 <marker date="1538568483626" expanded="true" signature="2660:2666" ph="..." />
@@ -208,20 +206,20 @@
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/trainByPlaying.py" />
         <option value="$PROJECT_DIR$/GameInterface.py" />
-        <option value="$PROJECT_DIR$/trainNetwork.py" />
         <option value="$PROJECT_DIR$/visualize_concept.py" />
         <option value="$PROJECT_DIR$/policy.py" />
         <option value="$PROJECT_DIR$/Test.py" />
+        <option value="$PROJECT_DIR$/trainNetwork.py" />
         <option value="$PROJECT_DIR$/saliency.py" />
         <option value="$PROJECT_DIR$/LearningProcessInterface.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="75" />
-    <option name="y" value="75" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="97" />
+    <option name="y" value="169" />
     <option name="width" value="1215" />
-    <option name="height" value="1000" />
+    <option name="height" value="972" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -244,7 +242,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pyCompany" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -350,15 +348,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1215" height="1028" extended-state="6" />
+    <frame x="97" y="169" width="1215" height="972" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24916108" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24916108" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32777777" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34952608" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3992891" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -407,17 +405,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/trainNetwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-            <marker date="1538472164491" expanded="true" signature="1216:1222" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/venv/explain_atari/lib/python3.6/site-packages/gym/envs/registration.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -428,10 +415,20 @@
     <entry file="file://$PROJECT_DIR$/make_movie.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="69" column="16" selection-start-line="69" selection-start-column="16" selection-end-line="69" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/policy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="76" column="39" selection-start-line="76" selection-start-column="39" selection-end-line="76" selection-end-column="39" />
+        <state relative-caret-position="-40">
+          <caret line="55" column="27" lean-forward="true" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
           <folding>
             <marker date="1538568483626" expanded="true" signature="2616:2666" ph="..." />
             <marker date="1538568483626" expanded="true" signature="2660:2666" ph="..." />
@@ -440,45 +437,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualize_concept.py">
+    <entry file="file://$PROJECT_DIR$/trainNetwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="66" column="14" lean-forward="true" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
+        <state relative-caret-position="150">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
           <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <marker date="1538568152369" expanded="true" signature="444:480" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="63" column="19" lean-forward="true" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <marker date="1538571360093" expanded="true" signature="1316:1568" ph="..." />
+            <element signature="e#0#27#0" expanded="true" />
+            <marker date="1539175074872" expanded="true" signature="1216:1222" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/saliency.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="103" column="54" selection-start-line="103" selection-start-column="42" selection-end-line="103" selection-end-column="54" />
+        <state relative-caret-position="272">
+          <caret line="87" column="55" lean-forward="true" selection-start-line="87" selection-start-column="55" selection-end-line="87" selection-end-column="55" />
           <folding>
-            <marker date="1538581017269" expanded="true" signature="4419:5110" ph="..." />
+            <marker date="1539180611446" expanded="true" signature="5455:5476" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize_concept.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LearningProcessInterface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+        <state relative-caret-position="392">
+          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
-            <marker date="1538581822789" expanded="true" signature="3316:3322" ph="..." />
+            <marker date="1539180951379" expanded="true" signature="5356:5362" ph="..." />
           </folding>
         </state>
       </provider>

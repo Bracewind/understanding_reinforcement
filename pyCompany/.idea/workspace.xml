@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98f90d49-d032-439b-a48d-13439e8bbac4" name="Default Changelist" comment="" />
+    <list default="true" id="98f90d49-d032-439b-a48d-13439e8bbac4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saliency_detection/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../saliency_detection/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saliency_detection/LearningProcessInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/../saliency_detection/LearningProcessInterface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saliency_detection/saliency.py" beforeDir="false" afterPath="$PROJECT_DIR$/../saliency_detection/saliency.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saliency_detection/trainNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../saliency_detection/trainNetwork.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,17 +44,34 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="146197196">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="362" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Python" value="362" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Company.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="39" column="78" lean-forward="true" selection-start-line="39" selection-start-column="78" selection-end-line="39" selection-end-column="78" />
+            <state relative-caret-position="570">
+              <caret line="39" column="78" selection-start-line="39" selection-start-column="78" selection-end-line="39" selection-end-column="78" />
               <folding>
-                <element signature="e#0#19#0" expanded="true" />
-                <marker date="1538405027625" expanded="true" signature="273:337" ph="..." />
+                <marker date="1538405028000" expanded="true" signature="273:337" ph="..." />
               </folding>
             </state>
           </provider>
@@ -58,11 +82,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="46" selection-start-line="15" selection-end-line="16" />
+            <state relative-caret-position="165">
+              <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -72,24 +96,19 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
-              <folding>
-                <marker date="1538405148353" expanded="true" signature="48:53" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="54" column="35" selection-start-line="54" selection-start-column="35" selection-end-line="54" selection-end-column="35" />
+            <state relative-caret-position="480">
+              <caret line="32" column="34" lean-forward="true" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1538404557835" expanded="true" signature="106:121" ph="..." />
-                <marker date="1538404557835" expanded="true" signature="135:150" ph="..." />
-                <marker date="1538404557835" expanded="true" signature="164:179" ph="..." />
-                <marker date="1538404557835" expanded="true" signature="193:208" ph="..." />
+                <marker date="1539177877245" expanded="true" signature="396:526" ph="..." />
+                <marker date="1539177877245" expanded="true" signature="540:675" ph="..." />
               </folding>
             </state>
           </provider>
@@ -113,23 +132,27 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Test.py" />
-        <option value="$PROJECT_DIR$/Interface.py" />
         <option value="$PROJECT_DIR$/Market.py" />
         <option value="$PROJECT_DIR$/Company.py" />
         <option value="$PROJECT_DIR$/MatrixDecision.py" />
+        <option value="$PROJECT_DIR$/Test.py" />
+        <option value="$PROJECT_DIR$/Interface.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="160" />
-    <option name="y" value="292" />
+    <option name="x" value="166" />
+    <option name="y" value="114" />
     <option name="width" value="1195" />
     <option name="height" value="960" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -278,16 +301,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="85" y="64" width="1195" height="960" extended-state="0" />
+    <frame x="166" y="114" width="1195" height="960" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3297362" />
@@ -295,6 +314,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -307,20 +330,30 @@
     <entry file="file://$PROJECT_DIR$/productConcept.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Company.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="39" column="78" selection-start-line="39" selection-start-column="78" selection-end-line="39" selection-end-column="78" />
+          <folding>
+            <marker date="1538405028000" expanded="true" signature="273:337" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Stock.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Interface.py">
+    <entry file="file://$PROJECT_DIR$/MatrixDecision.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="54" column="35" selection-start-line="54" selection-start-column="35" selection-end-line="54" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1538404557835" expanded="true" signature="106:121" ph="..." />
-            <marker date="1538404557835" expanded="true" signature="135:150" ph="..." />
-            <marker date="1538404557835" expanded="true" signature="164:179" ph="..." />
-            <marker date="1538404557835" expanded="true" signature="193:208" ph="..." />
-          </folding>
+        <state relative-caret-position="60">
+          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -331,31 +364,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Company.py">
+    <entry file="file://$PROJECT_DIR$/Interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="39" column="78" lean-forward="true" selection-start-line="39" selection-start-column="78" selection-end-line="39" selection-end-column="78" />
+        <state relative-caret-position="480">
+          <caret line="32" column="34" lean-forward="true" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <marker date="1538405027625" expanded="true" signature="273:337" ph="..." />
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1539177877245" expanded="true" signature="396:526" ph="..." />
+            <marker date="1539177877245" expanded="true" signature="540:675" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MatrixDecision.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
-          <folding>
-            <marker date="1538405148353" expanded="true" signature="48:53" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="46" selection-start-line="15" selection-end-line="16" />
         </state>
       </provider>
     </entry>

@@ -78,12 +78,12 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     return pmax * scores / scores.max()
 
 
-def score_state(model, history, interp_func, range_values):
+def score_state(model, history, interp_func, range_values, totalReward):
     L = run_through_model_2(model, history)
     scores = np.zeros(model.nbState)
     for i in range(model.nbState):
-        l_high = run_through_model_2(model, history, i, interp_func, [1], range_values[i])
-        l_low = run_through_model_2(model, history, i, interp_func, [-1], range_values[i])
+        l_high = run_through_model_2(model, history, i, interp_func, [1], range_values[i]) - totalReward
+        l_low = run_through_model_2(model, history, i, interp_func, [-1], range_values[i]) - totalReward
         l = (l_high + l_low)/2
         scores[i] = (L-l).pow(2).sum().mul(0.5).data[0]
     return scores
