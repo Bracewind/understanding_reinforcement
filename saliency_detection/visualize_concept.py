@@ -13,16 +13,11 @@ import gym, os, sys, time, argparse
 
 sys.path.append('..')
 from policy import *
-from LeaningProcessInterface import *
+from LearningProcessInterface import *
 from saliency import *
 
 
-def calculate_saliency(learning_process_interface, model):
-    learning_process_interface.
-
-
-
-def make_movie(env_name, checkpoint='*.tar', num_frames=20, first_frame=0, resolution=75, \
+def make_movie(env_name, checkpoint='*.tar', num_frames=150, first_frame=0, resolution=75, \
                save_dir='./movies/', density=5, radius=5, prefix='default', overfit_mode=False):
     # set up dir variables and environment
     load_dir = '{}{}/'.format('overfit-' if overfit_mode else '', env_name.lower())
@@ -31,17 +26,17 @@ def make_movie(env_name, checkpoint='*.tar', num_frames=20, first_frame=0, resol
                                                                    seed=0)  # make a seeded env
 
     # set up agent
-    model = DQN(env.observation_space.n, num_actions=env.action_space.n)
-    model.try_load(load_dir, checkpoint=checkpoint)
+    model = DQN(4, num_actions=env.action_space.n)
+    model.try_load(checkpoint)
 
     learning_process_interface = LearningProcessInterface(env, model)
 
     # get a rollout of the policy
-    movie_title = "{}-{}-{}.mp4".format(prefix, num_frames, env_name.lower())
+    movie_title = "{}-{}-{}_saliencyConcept.mp4".format(prefix, num_frames, env_name.lower())
     print('\tmaking movie "{}" using checkpoint at {}{}'.format(movie_title, load_dir, checkpoint))
     max_ep_len = first_frame + num_frames + 1
     torch.manual_seed(0)
-    history = learning_process_interface.playGameAndGetHistory()
+    history = learning_process_interface.calculate_saliency()
 
     # make the movie!
     start = time.time()
@@ -50,20 +45,19 @@ def make_movie(env_name, checkpoint='*.tar', num_frames=20, first_frame=0, resol
     writer = FFMpegWriter(fps=8, metadata=metadata)
 
     prog = '';
-    total_frames = len(history['ins'])
+    total_frames = len(history['image_saliency'])
     f = plt.figure(figsize=[6, 6 * 1.3], dpi=resolution)
     with writer.saving(f, save_dir + movie_title, resolution):
         for i in range(num_frames):
             ix = first_frame + i
+            print(total_frames)
+            print("ix: ", ix)
             if ix < total_frames:  # prevent loop from trying to process a frame ix greater than rollout length
-                frame = history['image'][ix].squeeze().copy()
-                saliency = score_state(model, history, ix, apply_gaussian)
-
-                # TODO: change frame to see effect of saliency
-
-                plt.imshow(frame);
+                frame = history['image_saliency'][ix].copy()
+                print("inside", ix)
+                plt.imshow(frame)
                 plt.title(env_name.lower(), fontsize=15)
-                writer.grab_frame();
+                writer.grab_frame()
                 f.clear()
 
                 tstr = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - start))

@@ -15,7 +15,12 @@ prepro = lambda img: imresize(img[35:195].mean(2), (80,80)).astype(np.float32).r
 searchlight = lambda I, mask: I*mask + gaussian_filter(I, sigma=3)*(1-mask) # choose an area NOT to blur
 occlude = lambda I, mask: I*(1-mask) + gaussian_filter(I, sigma=3)*mask # choose an area to blur
 
-apply_gaussian = lambda x: x + gaussian_perturbation(x, 1)
+alpha = 0.01
+apply_gaussian = lambda x, epsilon: x + epsilon[0]*alpha
+
+def apply_perturbation(x, epsilon, range_value):
+    return x + epsilon[0]*alpha*range_value
+
 
 
 def get_mask(center, size, r):
@@ -46,14 +51,13 @@ def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memo
 
 # ix is the numero of the current step
 # history['ins'][ix] is the state at the ix step
-def run_through_model(model, history, input_to_change=None, perturbation=None):
+def run_through_model_2(model, history, input_to_change=None, perturbation=None, arg_perturbation=None, range_value=None):
     if input_to_change is None:
         state = history['ins']
     else:
         assert (perturbation is not None, "perturbation cannot be none when we want to change an input")
-        state = perturbation(history['ins'])
-    tens_state = state
-    state = Variable(torch.Tensor(tens_state).cuda(), volatile=True).cuda()
+        state = perturbation(history['ins'], arg_perturbation, range_value)
+    state = Variable(torch.Tensor(state).cuda(), volatile=True).cuda()
     return model(state)
 
 
@@ -74,11 +78,13 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     return pmax * scores / scores.max()
 
 
-def score_state(model, history, interp_func):
-    L = run_through_model(model, history)
+def score_state(model, history, interp_func, range_values):
+    L = run_through_model_2(model, history)
     scores = np.zeros(model.nbState)
     for i in range(model.nbState):
-        l = run_through_model(model, history, i, interp_func)
+        l_high = run_through_model_2(model, history, i, interp_func, [1], range_values[i])
+        l_low = run_through_model_2(model, history, i, interp_func, [-1], range_values[i])
+        l = (l_high + l_low)/2
         scores[i] = (L-l).pow(2).sum().mul(0.5).data[0]
     return scores
 
@@ -114,14 +120,14 @@ def create_image_representation(saliency, image_length):
         for x in range(length_square):
             for y in range(length_square):
                 if abs(center-x) + abs(center-y) <= nbcolumn:
-                    image[x, index*(length_square) + y, 0] = 254
+                    image[x, index*(length_square) + y, 0] = int(254)
                 else:
                     image[x, index*(length_square) + y, 0] = 0
 
         currentCenter += 40
-        image[0, index*(length_square)] = 254
+        image[0, index*(length_square)] = int(254)
 
-    image = np.array(image, dtype="float32")
+    image = np.array(image, dtype="int")
     return image
 
 def get_env_meta(env_name):

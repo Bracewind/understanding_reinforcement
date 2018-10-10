@@ -14,8 +14,8 @@ class LearningProcessInterface(object):
         self.trainer = Trainer(self.playerModel, self.memoryGame)
 
     def oneEpisode(self, get_history=False, render=False, calculate_saliency=False):
-        if get_history:
-            history = {'ins': [], 'reward': [], 'image':[], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
+        if get_history or calculate_saliency:
+            history = {'ins': [], 'reward': [], 'image': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
         state = torch.Tensor(self.game.reset()).cuda()
         done = False
         while not done:
@@ -39,26 +39,22 @@ class LearningProcessInterface(object):
                 value_episode['reward'] = reward
                 value_episode['done'] = done
 
-                values = score_state(self.playerModel, value_episode, apply_gaussian)
+                range_values = [4.8,100,80,100]
+                values = score_state(self.playerModel, value_episode, apply_perturbation, range_values)
                 # TODO: no hardcode of meaning
                 values_dict = {'CartPosition': values[0], 'CartVelocity': values[1], 'PoleAngle': values[2], 'PoleVelocityAtTip': values[3]}
                 image = self.game.render(mode='rgb_array').tolist()
-                ok = 4
-                print(values_dict)
-                # print(create_image_representation(values))
                 length_image = len(image[0])
 
                 saliency = create_image_representation(values, length_image)
-                # [image.append(saliency_value) for saliency_value in image]
+                [image.append(saliency_value) for saliency_value in saliency]
 
-                print(np.array(image).size())
-                pyplot.imshow(np.array(image))
-                pyplot.show()
+                history['image_saliency'].append(np.array(image))
 
             state = next_state
             # time.sleep(1)
 
-        if get_history:
+        if get_history or calculate_saliency:
             return history
 
     def trainModel(self, batchSize, epoch, seeAdvance):
@@ -91,7 +87,7 @@ class LearningProcessInterface(object):
         self.oneEpisode(render=True)
 
     def calculate_saliency(self):
-        self.oneEpisode(calculate_saliency=True)
+        return self.oneEpisode(calculate_saliency=True)
 
     def __del__(self):
         self.game.close()
