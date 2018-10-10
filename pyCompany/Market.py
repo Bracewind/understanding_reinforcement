@@ -1,6 +1,7 @@
 class Market(object):
     def __init__(self):
         self.productMarkets = {}
+        self.time = 0
         
     def addProductMarket(self, productConceptName, funct):
         self.productMarkets[productConceptName] = funct
@@ -9,8 +10,8 @@ class Market(object):
         func = self.productMarkets[productConcept.name]
         quantity = round(func(company.productPrices[productConcept.name]))
         company.soldProduct(productConcept, quantity)
-        print("the stock is composed of", company.stock.stock)
-        print("capital: ", company.capital)
+        ###print("the stock is composed of", company.stock.stock)
+        ###print("capital: ", company.capital)
 
     def sellProducts(self, company):
         for product in company.listOfProductConcepts:

@@ -4,7 +4,7 @@ import numpy as np
 from MatrixDecision import *
 
 def f1(price):
-    return 0
+    return 1
 
 def f2(price):
     return 1
@@ -15,6 +15,9 @@ def f3(price):
 def f4(price):
     return 1
 
+
+vector = np.array([1,20,2, 50,7, 80, 3,120])
+matDec = MatrixDecision(4, vector)
 class Interface(object):
     def __init__(self):
         self.market = Market()
@@ -45,16 +48,38 @@ class Interface(object):
         self.market.addProductMarket("product3", f3)
         self.market.addProductMarket("product4", f4)
 
-    def step(self):
-        matDec = MatrixDecision(4)
+    def step(self, vector):
+        matDec = MatrixDecision(4, vector)
+        oldCapital = self.company.capital
         for product in range(matDec.matrix_np.shape[0]):
             productConcept = self.company.listOfProductConcepts[product]
             self.company.produceProducts( productConcept,matDec.matrix_np[product][0])
             self.company.fixPrice(productConcept.name, matDec.matrix_np[product][1])
-            print("the stock is composed of", self.company.stock.stock)
-            print("capital: ", self.company.capital)
-        self.market.sellProducts(self.company)
+            ###print("the stock is composed of", self.company.stock.stock)
+            ###print("capital: ", self.company.capital)
 
+        self.market.sellProducts(self.company)
+        self.market.time += 1
+        state = []
+        state.append(self.company.capital)
+        stock = self.company.stock.stock
+        for product in stock.keys():
+            state.append(stock[product])
+        reward = self.company.capital - oldCapital
+        done = (self.company.capital < 0) or (self.market.time > 199)
+        output = [state, reward, done, 0]
+        return output
+
+    def reset(self):
+        self.company.capital = 1000
+        for product in self.company.stock.stock.keys():
+            self.company.stock.stock[product] = 0
+        for product in self.company.productPrices.keys():
+            self.company.productPrices[product] = 0
+        self.market.time = 0
+
+    def render(self):
+        pass
 
 
         
