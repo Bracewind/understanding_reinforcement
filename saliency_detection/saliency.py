@@ -15,11 +15,12 @@ prepro = lambda img: imresize(img[35:195].mean(2), (80,80)).astype(np.float32).r
 searchlight = lambda I, mask: I*mask + gaussian_filter(I, sigma=3)*(1-mask) # choose an area NOT to blur
 occlude = lambda I, mask: I*(1-mask) + gaussian_filter(I, sigma=3)*mask # choose an area to blur
 
-alpha = 0.01
-apply_gaussian = lambda x, epsilon: x + epsilon[0]*alpha
 
-def apply_perturbation(x, epsilon, range_value):
-    return x + epsilon[0]*alpha*range_value
+# parameters contains sign and alpha value : the add of alpha% of range max value
+apply_gaussian = lambda x, parameters: x + parameters[0]*parameters[1]
+
+def apply_perturbation(x, epsilon, alpha, range_value):
+    return x + epsilon*alpha*range_value
 
 
 
@@ -51,13 +52,13 @@ def run_through_model(model, history, ix, interp_func=None, mask=None, blur_memo
 
 # ix is the numero of the current step
 # history['ins'][ix] is the state at the ix step
-def run_through_model_2(model, history, input_to_change=None, perturbation=None, arg_perturbation=None, range_value=None):
+def run_through_model_2(model, history, ix, input_to_change=None, perturbation=None, arg_perturbation=None, range_value=None):
     if input_to_change is None:
-        state = history['ins']
+        state = history['ins'][ix]
     else:
         assert (perturbation is not None, "perturbation cannot be none when we want to change an input")
-        state = perturbation(history['ins'], arg_perturbation, range_value)
-    state = Variable(torch.Tensor(state).cuda(), volatile=True).cuda()
+        state = perturbation(history['ins'][ix], *arg_perturbation)
+    state = Variable(state, volatile=True).cuda()
     return model(state)
 
 
@@ -78,14 +79,14 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     return pmax * scores / scores.max()
 
 
-def score_state(model, history, interp_func, range_values, totalReward):
-    L = run_through_model_2(model, history)
+def score_state(model, history, ix, interp_func, range_values, alpha, total_reward):
+    L = run_through_model_2(model, history, ix)
     scores = np.zeros(model.nbState)
-    for i in range(model.nbState):
-        l_high = run_through_model_2(model, history, i, interp_func, [1], range_values[i]) - totalReward
-        l_low = run_through_model_2(model, history, i, interp_func, [-1], range_values[i]) - totalReward
+    for input_feature in range(model.nbState):
+        l_high = run_through_model_2(model, history, ix, input_feature, interp_func, [1, alpha, range_values[input_feature]])
+        l_low = run_through_model_2(model, history, ix, input_feature, interp_func, [-1, alpha, range_values[input_feature]])
         l = (l_high + l_low)/2
-        scores[i] = (L-l).pow(2).sum().mul(0.5).data[0]
+        scores[input_feature] = (L-l).pow(2).sum().mul(0.5).data[0]
     return scores
 
 

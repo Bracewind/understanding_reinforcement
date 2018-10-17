@@ -57,7 +57,8 @@ def test_saliency():
     learning_process.calculate_saliency()
 
 def test_video():
-    make_movie('CartPole-v0', PATH_TO_FOLDER + "test_ckpt.pth.tar")
+    for alpha in range(1,20):
+        make_movie('CartPole-v0', PATH_TO_FOLDER + "test_ckpt.pth.tar", alpha=alpha/100, suffix_name=alpha/100)
 
 
 if __name__ == '__main__':
