@@ -14,6 +14,7 @@ class LearningProcessInterface(object):
         self.playerModel = model
         self.memoryGame = ReplayMemory(10000)
         self.trainer = Trainer(self.playerModel, self.memoryGame)
+        self.mean_ranges = [0,0,0,0]
 
     def oneEpisode(self, get_history=False, render=False, calculate_saliency=False):
         if calculate_saliency:
@@ -115,5 +116,18 @@ class LearningProcessInterface(object):
     def calculate_saliency(self):
         return self.oneEpisodeSaliency()
 
+    def setMeanRanges(self):
+        mean_ranges = [0,0,0,0]
+        nbOfEpisodes = 10
+        for episode in range(nbOfEpisodes):
+            history = self.oneEpisodeSaliency()
+            for state in range(len(history('ins'))-1):
+                nbFeatures = 4
+                for feature in range(nbFeatures):
+                    mean_ranges[feature] = history('ins')[state][feature + 1] - history('ins')[state][feature]
+            mean_ranges /= len(history('ins'))-1
+        self.mean_ranges = mean_ranges
+        print("mean_ranges = ", mean_ranges) 
+            
     def __del__(self):
         self.game.close()

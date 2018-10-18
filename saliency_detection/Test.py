@@ -59,8 +59,18 @@ def test_saliency():
 def test_video():
     for alpha in range(1,20):
         make_movie('CartPole-v0', PATH_TO_FOLDER + "test_ckpt.pth.tar", alpha=alpha/100, suffix_name=alpha/100)
+def test_mean_values():
+    model = DQN(4, 2)
+    env = gym.make('CartPole-v0')
+    learning_process = LearningProcessInterface(env, model)
 
-
+    learning_process.trainModel(32, 2000, seeAdvance=100)
+    learning_process.testModel(20, 20)
+    for i in range(5):
+        learning_process.displayGameWithModel()
+    
+    learnin_process.setMeanRanges()
+    
 if __name__ == '__main__':
     #testUtils()
     #testDQN()
@@ -68,4 +78,5 @@ if __name__ == '__main__':
     #testTraining()
     #testLearning()
     #test_saliency()
-    test_video()
+    #test_video()
+    test_mean_values()
