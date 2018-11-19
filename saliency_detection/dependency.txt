@@ -3,13 +3,14 @@ here is the linux environment (installed via apt) necesary by the program :
 zlib1g-dev (zlib)
 cmake
 ffmpeg
-
+python3-tk (Tkinter)
 
 here is the python environment used to launch the file (installed with pip)
 
 python 3.6
 numpy 1.15
 scipy 1.1
+Pillow 5.3
 matplotlib 3.0
 jupyter
 ffmpeg 1.2.1

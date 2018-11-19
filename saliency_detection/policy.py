@@ -8,8 +8,13 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.nn as nn
 
+from torch import optim
+
+import utils
 import glob
 import numpy as np
+import random
+import math
 from scipy.misc import imresize # preserves single-pixel info _unlike_ img = img[::2,::2]
 
 
@@ -55,16 +60,10 @@ class DQN(torch.nn.Module):
 
         self.epsilon = 0.01
 
-        self.initWeight()
-
-    def initWeight(self):
-        nn.init.constant_(self.input.weight, 0)
-        nn.init.constant_(self.deepFC1.weight, 0)
-        nn.init.constant_(self.actionChosen.weight, 0)
+        self.steps_done = 0
 
 
     def forward(self, inputs):
-        inputs = inputs
         x = F.elu(self.input(inputs))
         x = F.elu(self.deepFC1(x))
         return self.actionChosen(x)
@@ -77,10 +76,79 @@ class DQN(torch.nn.Module):
         self.load_state_dict(torch.load(save_file))
 
     def chooseAction(self, state):
-        valueAction = self(state)
-        action = (valueAction == max(valueAction)).nonzero()[0][0].cpu().numpy().tolist()
+        actions = self(state).cpu().tolist()
 
-        if (self.epsilon > np.random.random()):
-            action = np.random.random_integers(0, self.num_actions-1)
+        randomValue = random.random()
+        if randomValue < self.epsilon:
+            return random.randint(0, self.num_actions-1)
+        else:
+            return actions.index(max(actions))
 
-        return action
+    def calculateLoss(self, state, action, next_state, reward, done, discountFactor):
+        state_action_value = self(state)
+
+        expected_state_action_value = reward
+        if next_state is not None:
+            expected_state_action_value += discountFactor * max(self(next_state))
+
+        # copy the state action value given by the network
+        action_values = utils.tensor_deepcopy(state_action_value)
+
+        # change it to correspond to the state action value we want the network learn
+        action_values[action] = expected_state_action_value
+
+        # Compute Mean square error loss between what the network think and what we want
+        loss = nn.MSELoss()
+        value_loss = loss(state_action_value, action_values)
+        return value_loss
+
+
+class REINFORCE(torch.nn.Module):
+    def __init__(self, nbState, num_actions):
+        super(REINFORCE, self).__init__()
+        self.nbState = nbState
+        self.num_actions = num_actions
+        self.input = nn.Linear(nbState, 24).cuda()
+        self.deepFC1 = nn.Linear(24, 24).cuda()
+        self.actionChosen = nn.Linear(24, num_actions).cuda()
+
+        self.optimizer = optim.Adam(self.parameters(), 0.01)
+
+
+
+    def forward(self, state):
+        x = F.elu(self.input(state))
+        x = F.elu(self.deepFC1(x))
+        return F.softmax(self.actionChosen(x))
+
+    def chooseAction(self, state):
+        actionProbabilities = self(state).cpu().detach().numpy()
+
+        value = np.random.random()
+        currentProbaSum = 0
+        currentAction = 0
+        while value > actionProbabilities[currentAction] + currentProbaSum:
+            currentProbaSum += actionProbabilities[currentAction]
+            currentAction += 1
+        return currentAction
+
+    def trainModel(self, batch):
+        state_tensor = torch.FloatTensor([elem.cpu().tolist() for elem in batch['states']]).cuda()
+        reward_tensor = torch.FloatTensor(batch['rewards_discounted']).cuda()
+        # Actions are used as indices, must be LongTensor
+        action_tensor = torch.LongTensor(batch['actions']).cuda()
+
+        # Calculate loss
+        logprob = torch.log(self(state_tensor))
+        selected_logprobs = reward_tensor * \
+                            logprob[np.arange(len(action_tensor)), action_tensor]
+        loss = -selected_logprobs.mean()
+
+        self.optimizer.zero_grad()
+        # Calculate gradients
+        loss.backward()
+        # Apply gradients
+        self.optimizer.step()
+
+    def update_rule(self):
+        pass

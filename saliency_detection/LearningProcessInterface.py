@@ -4,6 +4,9 @@ from trainNetwork import *
 from matplotlib import pyplot
 from saliency import *
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 import time
 
 class LearningProcessInterface(object):
@@ -11,13 +14,10 @@ class LearningProcessInterface(object):
         self.game = env
         self.playerModel = model
         self.memoryGame = ReplayMemory(10000)
-        self.trainer = Trainer(self.playerModel, self.memoryGame)
+        self.trainerModel = Trainer(self.playerModel, self.memoryGame)
 
-    def oneEpisode(self, get_history=False, render=False, calculate_saliency=False):
-        if calculate_saliency:
-            get_history = True
-        if get_history:
-            history = {'ins': [], 'reward': [], 'image': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
+    def oneEpisode(self, get_history=False, render=False):
+        history = {'state': [], 'next_state': [], 'reward': [], 'action': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
         state = torch.Tensor(self.game.reset()).cuda()
         done = False
         while not done:
@@ -29,96 +29,76 @@ class LearningProcessInterface(object):
 
             self.memoryGame.push(state, action, next_state, reward, done)
 
-            if get_history:
-                history['ins'].append(state)
-                history['reward'].append(reward)
-                history['done'].append(done)
+            if render:
+                self.game.render()
 
-            if calculate_saliency:
-                value_episode = {'ins':None, 'reward': None, 'done': False}
-                value_episode['ins'] = state.cpu().detach().numpy()
-                value_episode['reward'] = reward
-                value_episode['done'] = done
-
-                range_values = [4.8,100,80,100]
-                values_saliency = score_state(self.playerModel, value_episode, apply_perturbation, range_values, totalReward)
-                # TODO: no hardcode of meaning
-                values_dict = {'CartPosition': values_saliency[0], 'CartVelocity': values_saliency[1], 'PoleAngle': values_saliency[2], 'PoleVelocityAtTip': values_saliency[3]}
-                image = self.game.render(mode='rgb_array').tolist()
-                length_image = len(image[0])
-
-                saliency = create_image_representation(values_saliency, length_image)
-                [image.append(saliency_value) for saliency_value in saliency]
-
-                history['image_saliency'].append(np.array(image))
+            history['state'].append(state)
+            history['action'].append(action)
+            history['reward'].append(reward)
+            history['done'].append(done)
+            history['next_state'].append(next_state)
 
             state = next_state
             # time.sleep(1)
 
-        if get_history:
-            return history
+        return history
 
-    def oneEpisodeSaliency(self, totalReward):
-        if calculate_saliency:
-            get_history = True
-        if get_history:
-            history = {'ins': [], 'reward': [], 'image': [], 'image_saliency': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
+    def oneEpisodeSaliency(self):
+        history = {'ins': [], 'reward': [], 'image': [], 'done': [], 'logits': [], 'values': [], 'outs': [], 'hx': [], 'cx': []}
         state = torch.Tensor(self.game.reset()).cuda()
         done = False
         while not done:
-
             action = self.playerModel.chooseAction(state)
 
             next_state, reward, done, expert_policy = self.game.step(action)
             next_state = torch.Tensor(next_state).cuda()
 
-            totalReward += reward
-
             self.memoryGame.push(state, action, next_state, reward, done)
 
-            if get_history:
-                history['ins'].append(state)
-                history['reward'].append(reward)
-                history['done'].append(done)
-
-            if calculate_saliency:
-                value_episode = {'ins':None, 'reward': None, 'done': False}
-                value_episode['ins'] = state.cpu().detach().numpy()
-                value_episode['reward'] = reward
-                value_episode['done'] = done
-
-                range_values = [4.8,100,80,100]
-                values_saliency = score_state(self.playerModel, value_episode, apply_perturbation, range_values, totalReward)
-                # TODO: no hardcode of meaning
-                values_dict = {'CartPosition': values_saliency[0], 'CartVelocity': values_saliency[1], 'PoleAngle': values_saliency[2], 'PoleVelocityAtTip': values_saliency[3]}
-                image = self.game.render(mode='rgb_array').tolist()
-                length_image = len(image[0])
-
-                saliency = create_image_representation(values_saliency, length_image)
-                [image.append(saliency_value) for saliency_value in saliency]
-
-                history['image_saliency'].append(np.array(image))
+            history['ins'].append(state)
+            history['reward'].append(reward)
+            history['done'].append(done)
+            image = self.game.render(mode='rgb_array')
+            history['image'].append(image)
 
             state = next_state
             # time.sleep(1)
 
-        if get_history:
-            return history
+        return history
 
-    def trainModel(self, batchSize, epoch, seeAdvance):
-        iter = 0
-        history = []
-        for j in range(epoch // batchSize):
-            for i in range(batchSize):
-                self.oneEpisode()
-                self.trainer.train(batchSize, history)
+    def discount_rewards(self, rewards, gamma=0.99):
+        r = np.array([gamma**i * rewards[i]
+                      for i in range(len(rewards))])
+        # Reverse the array direction for cumsum and then
+        # revert back to the original order
+        r = r[::-1].cumsum()[::-1]
+        return r - r.mean()
 
-                iter += 1
-                if iter % seeAdvance == 0:
-                    print(iter, "iteration done")
+    def doBatch(self, batch_size):
+        batch = {'rewards': [], 'rewards_discounted':[], 'states':[], 'next_states': [], 'actions':[], 'total_rewards':[], 'done': []}
+        for episode in range(batch_size):
+            history = self.oneEpisode()
+            batch['rewards'].extend(history['reward'])
+            batch['rewards_discounted'].extend(self.discount_rewards(history['reward']))
+            batch['states'].extend(history['state'])
+            batch['next_states'].extend(history['next_state'])
+            batch['actions'].extend(history['action'])
+            batch['total_rewards'].append(sum(history['reward']))
+            batch['done'].extend(history['done'])
+        return batch
 
-        pyplot.plot(range(len(history)), history)
-        pyplot.show()
+    def trainModel(self, batch_size, nb_batch):
+        loss_history = []
+        for current_batch in range(nb_batch):
+            self.doBatch(batch_size)
+            history = self.trainerModel.train(self.playerModel, batch_size)
+            if current_batch % 50 == 0:
+                print("current_batch : ", current_batch)
+            loss_history.append(history)
+
+        plt.plot(range(len(loss_history)), loss_history)
+        plt.show()
+
 
     def testModel(self, nbTestBeforeMean, nbTest):
         for i in range(nbTest):
@@ -131,11 +111,37 @@ class LearningProcessInterface(object):
     def playGameAndGetHistory(self):
         return self.oneEpisode(True)
 
+    def rangeStats(self, nbGame):
+        state = self.game.reset()
+        nbStateParameter = len(state)
+        rangeValues = [[state[indexState], state[indexState]] for indexState in range(nbStateParameter)]
+        meanVariation = [0 for i in range(nbStateParameter)]
+
+        numberState = [0, 0, 0, 0]
+
+        for i in range(nbGame):
+            lastState = None
+            history = self.oneEpisode()
+            for state in history['state']:
+                for stateFeature in range(nbStateParameter):
+                    newMaxRange = max(rangeValues[stateFeature][1], state[stateFeature])
+                    newMinRange = min(rangeValues[stateFeature][0], state[stateFeature])
+                    rangeValues[stateFeature] = [newMinRange, newMaxRange]
+
+                    if (lastState is not None):
+                        meanVariation[stateFeature] = (meanVariation[stateFeature]*numberState[stateFeature] + (state[stateFeature]-lastState[stateFeature])**2)/(numberState[stateFeature]+1)
+                        numberState[stateFeature] += 1
+                lastState = state
+
+        return rangeValues, meanVariation
+
+
+
     def displayGameWithModel(self):
         self.oneEpisode(render=True)
 
     def calculate_saliency(self):
-        return self.oneEpisode(calculate_saliency=True)
+        return self.oneEpisodeSaliency()
 
     def __del__(self):
         self.game.close()
