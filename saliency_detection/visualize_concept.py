@@ -108,7 +108,6 @@ def make_movie(env_name, checkpoint='*.tar', num_frames=150, first_frame=0, reso
             if ix < total_frames:  # prevent loop from trying to process a frame ix greater than rollout length
 
                 image = history['image'][ix].copy()
-
                 scores = calculate_saliency(nbOfState, ix, model, history, learning_process_interface)
                 saliency = create_image_representation(scores, image.shape[1])
                 print(saliency.shape)

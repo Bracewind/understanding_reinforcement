@@ -75,7 +75,6 @@ def score_frame(model, history, ix, r, d, interp_func, mode='actor'):
     scores = imresize(scores, size=[80,80], interp='bilinear').astype(np.float32)
     return pmax * scores / scores.max()
 
-
 def score_state(model, history, ix, interp_func):
     L = run_through_model_2(model, history, ix)
     scores = np.zeros(model.nbState)

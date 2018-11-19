@@ -141,8 +141,7 @@ def test_actor_critic():
     learning_process.trainModel(BATCH_SIZE, NB_BATCH)
 
     learning_process.testModel(10, 10)
-
-
+    
 if __name__ == '__main__':
     #testUtils()
     #testDQN()
